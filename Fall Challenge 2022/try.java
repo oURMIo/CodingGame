@@ -2,10 +2,6 @@ import java.util.*;
 import java.io.*;
 import java.math.*;
 
-/**
- * Auto-generated code below aims at helping you parse
- * the standard input according to the problem statement.
- **/
 class Player {
 
     public static void main(String args[]) {
@@ -24,11 +20,16 @@ class Player {
         int buildX = 0;
         int buildY = 0;
 
+        int spawnX = 0;
+        int spawnY = 0;
+
         // game loop
         while (true) {
             int myMatter = in.nextInt();    // IT's how many gear y have
             int oppMatter = in.nextInt();   // IT's how many gear Ename have
-           
+
+            boolean canSpawnFlag = false;
+            boolean canBuildFlag = false;
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
                     int scrapAmount = in.nextInt();
@@ -37,7 +38,7 @@ class Player {
                     int recycler = in.nextInt();
                     int canBuild = in.nextInt();
                     int canSpawn = in.nextInt();
-                    int inRangeOfRecycler = in.nextInt();   //Don't know
+                    int inRangeOfRecycler = in.nextInt();
 
                     if(firstCursEnemy && owner == 0){
                         firstCursEnemy = false;
@@ -52,24 +53,44 @@ class Player {
                     }
 
                     if(canBuild==1){
-                        System.err.println("x y - "+x+" "+y);
+                        System.err.println("canBuild x y - "+x+" "+y);
                         buildX = x;
                         buildY = y;
+                        canBuildFlag = true;
                     }
 
+                    if(canSpawn==1){
+                        System.err.println("canSpawn x y - "+x+" "+y);
+                        spawnX = x;
+                        spawnY = y;
+                        canSpawnFlag = true;
+                    }
                 }
             }
 
             // Write For Me
+/*
             System.err.println(" Enemy start - " + startEnemyX + " " + startEnemyY);
             System.err.println(" Me start - " + startMeX + " " + startMeY);
+*/
             
             // Write an action using System.out.println()
             // To debug: System.err.println("Debug messages...");
             // System.out.println("BUILD 1 1");
 
-            System.out.println("BUILD "+buildX +" "+buildY);
-            System.out.println("WAIT");
+            String action = "";
+            
+            if (canSpawnFlag) {
+                action = action + ("SPAWN 1 " + spawnX + " " + spawnY + ";");
+            }
+            
+            if (canBuildFlag) {
+                action = action + ("BUILD " + buildX + " " + buildY + ";");
+            }
+
+
+            action = action + ("MOVE 1 " + startMeX + " " + (startMeY - 1) + " " + startEnemyX + " " + (startEnemyY - 1));
+            System.out.println(action);
         }
     }
 }
