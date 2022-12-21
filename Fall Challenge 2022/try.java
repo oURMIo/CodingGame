@@ -2,26 +2,92 @@ import java.util.*;
 import java.io.*;
 import java.math.*;
 
+class Unit {
+    boolean blueTeam;
+    int nowX;
+    int nowY;
+    int count;
+    int moveX;
+    int moveY;
+
+    public Unit(boolean blueTeam) {
+        nowX = 0;
+        nowY = 0;
+        count = 0;
+        moveX = 0;
+        moveY = 0;
+        this.blueTeam = blueTeam;
+    }
+
+    public int getNowX() {
+        return nowX;
+    }
+
+    public void setNowX(int nowX) {
+        this.nowX = nowX;
+    }
+
+    public int getNowY() {
+        return nowY;
+    }
+
+    public void setNowY(int nowY) {
+        this.nowY = nowY;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getMoveX() {
+        return moveX;
+    }
+
+    public void setMoveX(int moveX) {
+        this.moveX = moveX;
+    }
+
+    public int getMoveY() {
+        return moveY;
+    }
+
+    public void setMoveY(int moveY) {
+        this.moveY = moveY;
+    }
+}
+
 class Player {
+    public static String moveUnit(Unit unitBlue, Unit unitRed) {
+        String moveUnits = "MOVE 1 "
+                + unitBlue.getNowX() + " "
+                + unitBlue.getNowY() + " "
+                + unitRed.getNowX() + " "
+                + unitRed.getNowY();
+        return moveUnits;
+    }
 
     public static void main(String args[]) {
         Scanner in = new Scanner(System.in);
         int width = in.nextInt();
         int height = in.nextInt();
-        
+
         int startEnemyX = 0;
         int startEnemyY = 0;
         boolean firstCursEnemy = true;
-
         int startMeX = 0;
         int startMeY = 0;
         boolean firstCursMe = true;
-
         int buildX = 0;
         int buildY = 0;
-
         int spawnX = 0;
         int spawnY = 0;
+
+        Unit unitBlue1 = new Unit(true);
+        Unit unitRed1 = new Unit(false);
 
         // game loop
         while (true) {
@@ -40,27 +106,39 @@ class Player {
                     int canSpawn = in.nextInt();
                     int inRangeOfRecycler = in.nextInt();
 
-                    if(firstCursEnemy && owner == 0){
+                    /*  Find Enemy  */
+                    if (firstCursEnemy && owner == 0) {
                         firstCursEnemy = false;
                         startEnemyX = x;
-                        startEnemyY = y+1;
+                        startEnemyY = y + 1;
+                        /*  set for unitRed1   */
+                        unitRed1.setNowX(x);
+                        unitRed1.setNowY(y);
+                        unitRed1.setCount(units);
                     }
 
-                    if(firstCursMe && owner == 1){
+                    /*  Find Me   */
+                    if (firstCursMe && owner == 1) {
                         firstCursMe = false;
                         startMeX = x;
-                        startMeY = y+1;
+                        startMeY = y + 1;
+                        /*  set for unitBlue1   */
+                        unitBlue1.setNowX(x);
+                        unitBlue1.setNowY(y);
+                        unitBlue1.setCount(units);
                     }
 
-                    if(canBuild==1){
-                        System.err.println("canBuild x y - "+x+" "+y);
+                    /*   Set X & Y For Build   */
+                    if (canBuild == 1) {
+                        System.err.println("canBuild x y - " + x + " " + y);
                         buildX = x;
                         buildY = y;
                         canBuildFlag = true;
                     }
 
-                    if(canSpawn==1){
-                        System.err.println("canSpawn x y - "+x+" "+y);
+                    /*   Set X & Y For Spawn   */
+                    if (canSpawn == 1) {
+                        System.err.println("canSpawn x y - " + x + " " + y);
                         spawnX = x;
                         spawnY = y;
                         canSpawnFlag = true;
@@ -73,23 +151,18 @@ class Player {
             System.err.println(" Enemy start - " + startEnemyX + " " + startEnemyY);
             System.err.println(" Me start - " + startMeX + " " + startMeY);
 */
-            
-            // Write an action using System.out.println()
-            // To debug: System.err.println("Debug messages...");
-            // System.out.println("BUILD 1 1");
 
             String action = "";
-            
+
             if (canSpawnFlag) {
                 action = action + ("SPAWN 1 " + spawnX + " " + spawnY + ";");
             }
-            
+
             if (canBuildFlag) {
                 action = action + ("BUILD " + buildX + " " + buildY + ";");
             }
 
-
-            action = action + ("MOVE 1 " + startMeX + " " + (startMeY - 1) + " " + startEnemyX + " " + (startEnemyY - 1));
+            action = action + moveUnit(unitBlue1, unitRed1);
             System.out.println(action);
         }
     }
