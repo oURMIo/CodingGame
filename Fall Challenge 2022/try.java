@@ -86,11 +86,11 @@ class Player {
         int spawnX = 0;
         int spawnY = 0;
 
-        Unit unitBlue1 = new Unit(true);
-        Unit unitRed1 = new Unit(false);
-
         // game loop
         while (true) {
+            Unit unitBlue1 = new Unit(true);
+            Unit unitRed1 = new Unit(false);
+
             int myMatter = in.nextInt();    // IT's how many gear y have
             int oppMatter = in.nextInt();   // IT's how many gear Ename have
 
@@ -107,21 +107,23 @@ class Player {
                     int inRangeOfRecycler = in.nextInt();
 
                     /*  Find Enemy  */
-                    if (firstCursEnemy && owner == 0) {
-                        firstCursEnemy = false;
-                        startEnemyX = x;
-                        startEnemyY = y + 1;
-                        /*  set for unitRed1   */
+//                    if (firstCursEnemy && owner == 0) {
+                    if (owner == 0) {
+//                        firstCursEnemy = false;
+//                        startEnemyX = x;
+//                        startEnemyY = y + 1;
+//                        /*  set for unitRed1   */
                         unitRed1.setNowX(x);
                         unitRed1.setNowY(y);
                         unitRed1.setCount(units);
                     }
 
                     /*  Find Me   */
-                    if (firstCursMe && owner == 1) {
-                        firstCursMe = false;
-                        startMeX = x;
-                        startMeY = y + 1;
+//                    if (firstCursMe && owner == 1) {
+                    if ( owner == 1) {
+//                        firstCursMe = false;
+//                        startMeX = x;
+//                        startMeY = y + 1;
                         /*  set for unitBlue1   */
                         unitBlue1.setNowX(x);
                         unitBlue1.setNowY(y);
